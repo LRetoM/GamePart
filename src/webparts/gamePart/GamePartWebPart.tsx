@@ -9,15 +9,29 @@ import { IGamePartComponentProperties } from './IGamePartComponentProperties';
 
 export default class GamePartWebPart extends BaseClientSideWebPart<Record<string, never>> {
   protected async onInit(): Promise<void> {
-    return super.onInit();
+    console.log('[GamePart] onInit start');
+    try {
+      const result = await super.onInit();
+      console.log('[GamePart] onInit done');
+      return result;
+    } catch (error) {
+      console.error('[GamePart] onInit error:', error);
+      throw error;
+    }
   }
 
   public render(): void {
-    const element: React.ReactElement<IGamePartComponentProperties> = React.createElement(
-      GamePartComponent,
-      { Context: this.context }
-    );
-    ReactDom.render(<Provider store={store}>{element}</Provider>, this.domElement);
+    console.log('[GamePart] render start');
+    try {
+      const element: React.ReactElement<IGamePartComponentProperties> = React.createElement(
+        GamePartComponent,
+        { Context: this.context }
+      );
+      ReactDom.render(<Provider store={store}>{element}</Provider>, this.domElement);
+      console.log('[GamePart] render done');
+    } catch (error) {
+      console.error('[GamePart] render error:', error);
+    }
   }
 
   protected onDispose(): void {
