@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageBar, MessageBarType, Spinner, SpinnerSize } from '@fluentui/react';
-import { useAppDispatch, useAppSelector } from '../GamePartWebPart';
+import { useAppDispatch, useAppSelector } from '../../../redux/Hooks';
 import { CommonsState } from '../../../stateModels/CommonsState';
 import { LOADING_COMMONS_DONE } from '../../../redux/reducers/CommonsStateReducer';
 import { IGamePartComponentProperties } from '../IGamePartComponentProperties';

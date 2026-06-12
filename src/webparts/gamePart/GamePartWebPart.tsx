@@ -3,13 +3,9 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { Provider } from 'react-redux';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import store, { AppDispatch, RootState } from '../../redux/Store';
+import store from '../../redux/Store';
 import { GamePartComponent } from './components/GamePartComponent';
 import { IGamePartComponentProperties } from './IGamePartComponentProperties';
-
-export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default class GamePartWebPart extends BaseClientSideWebPart<Record<string, never>> {
   protected async onInit(): Promise<void> {
