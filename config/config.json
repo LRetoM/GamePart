@@ -14,7 +14,6 @@
   "externals": {},
   "localizedResources": {
     "GamePartWebPartStrings": "lib/webparts/gamePart/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
-    "GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js"
+"GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js"
   }
 }
