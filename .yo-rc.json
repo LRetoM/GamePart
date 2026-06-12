@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.22.3",
+    "sdksVersions": {},
+    "version": "1.23.1",
+    "libraryName": "spfx-game",
+    "libraryId": "c99dda42-8a26-479c-939a-7e703e1cf588",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "spfx-game",
+    "solutionShortDescription": "spfx-game description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
