@@ -5,25 +5,41 @@
   color: var(--bodyText);
 }
 
-.welcome {
-  text-align: center;
+.title {
+  margin: 0 0 0.5em 0;
 }
 
-.welcomeImage {
-  width: 100%;
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
   max-width: 420px;
 }
 
-.links {
-  a {
-    text-decoration: none;
-    color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+.hud {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
 
-    &:hover {
-      text-decoration: underline;
-      color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
-    }
+.stats {
+  display: flex;
+  gap: 1.25em;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5em;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  canvas {
+    border: 2px solid #333;
+    display: block;
   }
 }

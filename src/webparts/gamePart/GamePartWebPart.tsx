@@ -7,6 +7,11 @@ import store from '../../redux/Store';
 import { GamePartComponent } from './components/GamePartComponent';
 import { IGamePartComponentProperties } from './IGamePartComponentProperties';
 
+// Wird ausgefuehrt, sobald das Bundle vom Browser geladen wird. Erscheint dieser
+// Log NICHT in der Konsole, wird das Bundle gar nicht geladen (z.B. localhost-
+// Zertifikat nicht vertraut) - dann liegt es nicht am Code.
+console.log('[GamePart] WebPart-Bundle geladen');
+
 export default class GamePartWebPart extends BaseClientSideWebPart<Record<string, never>> {
   protected async onInit(): Promise<void> {
     console.log('[GamePart] onInit start');
