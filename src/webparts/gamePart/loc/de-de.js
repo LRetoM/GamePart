@@ -1,7 +1,7 @@
 define([], function() {
   return {
     "General": {
-      "LoadingError": "An error occurred."
+      "LoadingError": "Ein Fehler ist aufgetreten."
     }
   }
 });
