@@ -10,6 +10,9 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "noImplicitAny": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "types": [
+      "webpack-env"
+    ]
   }
 }
