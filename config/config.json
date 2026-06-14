@@ -2,14 +2,6 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "game-part-web-part": {
-      "components": [
-        {
-          "entrypoint": "./lib/webparts/gamePart/GamePartWebPart.js",
-          "manifest": "./src/webparts/gamePart/GamePartWebPart.manifest.json"
-        }
-      ]
-    },
     "game-part-snake-web-part": {
       "components": [
         {
@@ -21,7 +13,6 @@
   },
   "externals": {},
   "localizedResources": {
-    "GamePartWebPartStrings": "lib/webparts/gamePart/loc/{locale}.js",
     "GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js",
     "GamePartSnakeWebPartStrings": "lib/webparts/gamePartSnake/loc/{locale}.js"
   }
