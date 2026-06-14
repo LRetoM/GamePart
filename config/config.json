@@ -9,11 +9,20 @@
           "manifest": "./src/webparts/gamePart/GamePartWebPart.manifest.json"
         }
       ]
+    },
+    "game-part-snake-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/gamePartSnake/GamePartSnakeWebPart.js",
+          "manifest": "./src/webparts/gamePartSnake/GamePartSnakeWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "GamePartWebPartStrings": "lib/webparts/gamePart/loc/{locale}.js",
-"GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js"
+    "GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js",
+    "GamePartSnakeWebPartStrings": "lib/webparts/gamePartSnake/loc/{locale}.js"
   }
 }
