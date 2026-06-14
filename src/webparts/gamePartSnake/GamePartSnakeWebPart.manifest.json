@@ -21,8 +21,6 @@
     "title": { "default": "GamePartSnake" },
     "description": { "default": "GamePartSnake description" },
     "officeFabricIconFontName": "Page",
-    "properties": {
-      "description": "GamePartSnake"
-    }
+    "properties": {}
   }]
 }

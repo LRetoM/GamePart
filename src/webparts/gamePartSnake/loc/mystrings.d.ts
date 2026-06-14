@@ -1,19 +1,7 @@
 declare interface IGamePartSnakeWebPartStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
-  AppLocalEnvironmentSharePoint: string;
-  AppLocalEnvironmentTeams: string;
-  AppLocalEnvironmentOffice: string;
-  AppLocalEnvironmentOutlook: string;
-  AppSharePointEnvironment: string;
-  AppTeamsTabEnvironment: string;
-  AppOfficeEnvironment: string;
-  AppOutlookEnvironment: string;
-  UnknownEnvironment: string;
 }
 
 declare module 'GamePartSnakeWebPartStrings' {
-  const strings: IGamePartSnakeWebPartStrings;
-  export = strings;
+    const strings: IGamePartSnakeWebPartStrings;
+    export = strings;
 }
