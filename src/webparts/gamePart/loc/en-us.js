@@ -1,7 +1,0 @@
-define([], function() {
-  return {
-    "General": {
-      "LoadingError": "An error occurred."
-    }
-  }
-});

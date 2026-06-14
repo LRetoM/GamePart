@@ -1,1 +1,0 @@
-// replaced by IGamePartComponentProperties.ts

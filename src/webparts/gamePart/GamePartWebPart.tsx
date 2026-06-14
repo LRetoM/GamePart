@@ -2,10 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { Provider } from 'react-redux';
-import store from '../../redux/Store';
 import { GamePartComponent } from './components/GamePartComponent';
-import { IGamePartComponentProperties } from './IGamePartComponentProperties';
 
 export default class GamePartWebPart extends BaseClientSideWebPart<Record<string, never>> {
   protected async onInit(): Promise<void> {
@@ -13,11 +10,8 @@ export default class GamePartWebPart extends BaseClientSideWebPart<Record<string
   }
 
   public render(): void {
-    const element: React.ReactElement<IGamePartComponentProperties> = React.createElement(
-      GamePartComponent,
-      { Context: this.context }
-    );
-    ReactDom.render(<Provider store={store}>{element}</Provider>, this.domElement);
+    const element: React.ReactElement = React.createElement(GamePartComponent);
+    ReactDom.render(element, this.domElement);
   }
 
   protected onDispose(): void {
