@@ -1,6 +1,6 @@
 {
   "@microsoft/generator-sharepoint": {
-    "useGulp": false,
+    "useGulp": true,
     "plusBeta": false,
     "isCreatingSolution": false,
     "nodeVersion": "22.22.2",
