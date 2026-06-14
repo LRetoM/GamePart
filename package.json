@@ -6,12 +6,13 @@
     "node": ">=22.14.0 <23.0.0"
   },
   "scripts": {
-    "build": "heft build --clean",
-    "bundle": "heft bundle --clean",
-    "clean": "heft clean",
-    "serve": "heft start",
-    "start": "heft start",
-    "test": "heft test --clean"
+    "build": "gulp bundle",
+    "bundle": "gulp bundle --ship",
+    "clean": "gulp clean",
+    "serve": "gulp serve",
+    "start": "gulp serve",
+    "test": "gulp test",
+    "package-solution": "gulp package-solution --ship"
   },
   "dependencies": {
     "@fluentui/react": "^8.106.4",
@@ -32,16 +33,14 @@
   "devDependencies": {
     "@microsoft/eslint-config-spfx": "1.23.1",
     "@microsoft/eslint-plugin-spfx": "1.23.1",
+    "@microsoft/rush-stack-compiler-5.3": "*",
+    "@microsoft/sp-build-web": "1.23.1",
     "@microsoft/sp-module-interfaces": "1.23.1",
-    "@microsoft/spfx-heft-plugins": "1.23.1",
-    "@microsoft/spfx-web-build-rig": "1.23.1",
-    "@rushstack/heft": "1.2.17",
-    "@types/jest": "30.0.0",
     "@types/react": "17.0.45",
     "@types/react-dom": "17.0.17",
     "@types/webpack-env": "~1.15.2",
     "eslint": "9.37.0",
     "eslint-plugin-react-hooks": "5.2.0",
-    "typescript": "~5.8.0"
+    "gulp": "~4.0.0"
   }
 }
