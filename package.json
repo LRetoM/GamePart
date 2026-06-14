@@ -33,14 +33,17 @@
   "devDependencies": {
     "@microsoft/eslint-config-spfx": "1.23.1",
     "@microsoft/eslint-plugin-spfx": "1.23.1",
-    "@microsoft/rush-stack-compiler-5.3": "*",
+    "@microsoft/rush-stack-compiler-5.3": "0.1.0",
     "@microsoft/sp-build-web": "1.23.1",
     "@microsoft/sp-module-interfaces": "1.23.1",
+    "@rushstack/eslint-config": "4.0.1",
     "@types/react": "17.0.45",
     "@types/react-dom": "17.0.17",
     "@types/webpack-env": "~1.15.2",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "gulp": "~4.0.0"
+    "ajv": "^8.20.0",
+    "eslint": "8.57.1",
+    "eslint-plugin-react-hooks": "4.3.0",
+    "gulp": "4.0.2",
+    "typescript": "~5.3.3"
   }
 }
