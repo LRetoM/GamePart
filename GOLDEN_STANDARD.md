@@ -1,6 +1,37 @@
-# SPFx Golden Standard — Projektaufbau & Konventionen
+# SPFx Golden Standard — Projektaufbau, Konventionen & Lernprinzipien
 
-Dieses Dokument ist der verbindliche Goldene Standard für alle SPFx-Projekte. Alles hier basiert auf dem bewährten `SPFX-test`-Referenzprojekt und den Firmenanforderungen.
+Dieses Dokument ist der verbindliche Standard für alle SPFx-Projekte. Er basiert auf dem `SPFX-test`-Referenzprojekt, dem CAR-Muster (internes Firmenreferenzprojekt) und den Unternehmensanforderungen.
+
+**Wichtig:** Dieser Standard ist gleichzeitig ein Lernleitfaden. Er erklärt nicht nur das *Was*, sondern auch das *Warum* — damit du wie ein echter Entwickler denkst, nicht nur Muster kopierst.
+
+---
+
+## 0. Zusammenarbeit & Lernprinzipien
+
+### Unsere Arbeitsweise
+
+Du bist der Entwickler. Ich bin dein Senior Developer und Mentor.
+
+Das bedeutet konkret:
+- **Du schreibst den Code.** Ich erkläre dir was zu tun ist, du setzt es um.
+- **Ich erkläre das Warum.** Bevor wir etwas implementieren, verstehst du warum wir es so machen.
+- **Wir gehen in der richtigen Reihenfolge vor.** Wie ein echter Entwickler — von der Architektur zur Implementierung.
+- **Kein Vibe-Coding.** Nichts wird umgesetzt, was du nicht nachvollziehen kannst.
+- **Fehler sind Lernmöglichkeiten.** Wenn etwas nicht funktioniert, analysieren wir gemeinsam warum.
+
+### Wie wir Entscheidungen treffen
+
+Bevor wir Code schreiben, stellen wir uns immer:
+1. **Was** wollen wir erreichen?
+2. **Warum** machen wir es so (und nicht anders)?
+3. **Welcher** Teil des Golden Standards gilt hier?
+
+### Qualitätsmaßstab
+
+Wir arbeiten nach Firmenkonventionen und Best Practices — kein "es funktioniert irgendwie". Jede Zeile Code muss:
+- Dem Naming-Standard entsprechen
+- Die richtige Schicht (Service / Reducer / Komponente) nutzen
+- Wartbar und lesbar sein, als würde ein Kollege den Code reviewen
 
 ---
 
@@ -48,6 +79,9 @@ src/
 ├── constants/
 │   ├── GraphQueryConstants.ts
 │   └── SpQueryConstants.ts
+├── interfaces/                         ← Daten-Interfaces (keine State-Klassen)
+│   ├── IGroupItem.ts
+│   └── ISpListInfo.ts
 ├── redux/
 │   ├── reducers/
 │   │   ├── CommonsStateReducer.ts
@@ -57,16 +91,16 @@ src/
 ├── services/
 │   ├── LoggingService.ts
 │   └── [Feature]Service.ts
-├── stateModels/
+├── stateModels/                        ← State-Klassen mit Konstruktor
 │   ├── CommonsState.ts
 │   └── [Feature]State.ts
 └── webparts/
-    └── [webpartName]/                ← camelCase
+    └── [webpartName]/                  ← camelCase
         ├── components/
-        │   ├── [featureName]Component/    ← camelCase Ordner
-        │   │   └── [Feature]Component.tsx ← PascalCase Datei
-        │   ├── [WebpartName].module.scss
-        │   └── [WebpartName]Component.tsx
+        │   ├── [featureName]Component/     ← camelCase Ordner
+        │   │   └── [Feature]Component.tsx  ← PascalCase Datei
+        │   ├── [WebpartName].module.scss   ← nach App benannt
+        │   └── [WebpartName]Component.tsx  ← Root-Komponente
         ├── loc/
         │   ├── de-de.js
         │   ├── en-us.js
@@ -80,7 +114,8 @@ src/
 - Ordner immer **camelCase**: `userProfileComponent/`, `stateModels/`, `redux/`
 - Dateien immer **PascalCase**: `UserState.ts`, `LoggingService.ts`
 - Jede Komponente bekommt ihren **eigenen Unterordner** in `components/`
-- `constants/`, `redux/`, `services/`, `stateModels/` liegen **direkt unter `src/`** (nicht unter webparts)
+- `constants/`, `interfaces/`, `redux/`, `services/`, `stateModels/` liegen **direkt unter `src/`**
+- `interfaces/` für Daten-Interfaces (z.B. `IGroupItem`), `stateModels/` für Redux-State-Klassen
 
 ---
 
@@ -92,12 +127,13 @@ UserState.ts                  ← PascalCase
 UserStateReducer.ts           ← PascalCase + Suffix
 UserService.ts                ← PascalCase + Suffix
 IUserComponentProperties.ts   ← I-Prefix + PascalCase
-ApiExplorer.module.scss       ← PascalCase + .module.scss
+GamePart.module.scss          ← PascalCase (nach App benannt)
+IGroupItem.ts                 ← I-Prefix für Daten-Interfaces
 ```
 
 ### Interfaces
 ```typescript
-export interface IApiExplorerComponentProperties { ... }
+export interface IGamePartComponentProperties { ... }
 //               ↑ immer I-Prefix + PascalCase
 ```
 
@@ -116,31 +152,52 @@ export const { START_LOADING_USER, LOADING_USER } = userSlice.actions;
 //              ↑ immer UPPER_SNAKE_CASE
 ```
 
-### Funktionen & Methoden (camelCase)
+### Funktionen & Methoden
 ```typescript
+// Public Service-Methoden: get-Prefix, camelCase
+public static async getCurrentUser(commonsState: CommonsState): Promise<...> { ... }
+
+// Private Service-Methoden: _ Prefix + camelCase
+private static async _parseUserResponse(user: User): Promise<...> { ... }
+
+// Lokale Funktionen in Komponenten: camelCase
 const getCurrentUser = async (): Promise<void> => { ... }
-public static async getUserGroups(commonsState: CommonsState): Promise<...> { ... }
 ```
 
-### Konstanten (PascalCase Objekt, UPPER für primitive)
+### Konstanten
 ```typescript
-export const GraphSelectFields = { User: [...], Group: [...] };
-export const MAX_RETRIES = 3;
+export const GraphSelectFields = { User: [...], Group: [...] };  // PascalCase Objekt
+export const MAX_RETRIES = 3;                                    // UPPER für primitive
 ```
 
-### Variablen (camelCase, nie Abkürzungen)
+### Variablen (camelCase, niemals Abkürzungen)
 ```typescript
 const commonsState = ...   // ✓
-const cs = ...             // ✗
-const e = ...              // ✗  
+const cs = ...             // ✗ — zu kurz, unklar
+const e = ...              // ✗ — nie
 const error = ...          // ✓
+const group = ...          // ✓ (nicht g => ...)
+const list = ...           // ✓ (nicht l => ...)
+```
+
+**Regel:** Kein Variablenname kürzer als 3 Zeichen. Ausnahme: `id` als etablierte Konvention.
+
+### Parameter-Benennung in Komponenten
+```typescript
+// Props-Parameter heißt immer "properties", nie "props"
+export const GamePartComponent: React.FunctionComponent<IGamePartComponentProperties> = (properties) => {
+  dispatch(LOADING_COMMONS(properties));
+};
+
+// Komponenten ohne Props bekommen keinen Parameter
+export const UserProfileComponent: React.FunctionComponent = () => {
 ```
 
 ---
 
 ## 4. State Models (`src/stateModels/`)
 
-Jedes Feature bekommt eine eigene State-Klasse. Keine Interfaces, nur Klassen mit Konstruktor-Initialisierung.
+Jedes Feature bekommt eine eigene State-Klasse. **Keine Interfaces** — nur Klassen mit Konstruktor-Initialisierung.
 
 ```typescript
 // src/stateModels/UserState.ts
@@ -152,7 +209,7 @@ export class UserState {
   public SharePointUserDisplayName: string;
 
   constructor() {
-    this.IsLoading = true;
+    this.IsLoading = true;           // ← immer true beim Start = Spinner
     this.GraphUser = undefined;
     this.SharePointUserDisplayName = '';
   }
@@ -163,7 +220,8 @@ export class UserState {
 - Dateiname = Klassenname (`UserState.ts` → `export class UserState`)
 - Properties: `public` + **PascalCase**
 - Constructor setzt alle Defaults
-- `IsLoading: true` als Standard (zeigt Spinner beim Start)
+- `IsLoading: true` als Standard — zeigt Spinner solange Daten nicht geladen
+- Existierende API-Typen nutzen (`User` aus `@microsoft/microsoft-graph-types`), keine eigenen Typen nachbauen
 
 ---
 
@@ -180,7 +238,7 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 export class CommonsState {
   public SharepointConnection: SPFI;
   public GraphConnection: GraphFI;
-  public Context: WebPartContext;
+  public Context: WebPartContext;   // Hinweis: kann auch "any" sein wenn TS4023-Fehler auftritt
   public IsInitialLoading: boolean;
   public HasAppError: boolean;
 
@@ -194,11 +252,13 @@ export class CommonsState {
 }
 ```
 
+**Warum CommonsState?** Sp/Graph-Verbindungen werden einmal im WebPart erstellt und müssen dann in allen Services verfügbar sein. Redux ist der einzige globale Speicher — deshalb landen die Verbindungen im CommonsState.
+
 ---
 
 ## 6. Redux Reducers (`src/redux/reducers/`)
 
-**Redux Toolkit `createSlice()`** — kein altes Redux.
+**Redux Toolkit `createSlice()`** — kein altes Redux, keine `switch`-Statements.
 
 ```typescript
 // src/redux/reducers/UserStateReducer.ts
@@ -231,19 +291,23 @@ export const { START_LOADING_USER, LOADING_USER } = userSlice.actions;
 **Regeln:**
 - Dateiname: `[Feature]StateReducer.ts`
 - Action-Namen: UPPER_SNAKE_CASE
-- State immer mit Spread kopieren: `{ ...state, ... }`
+- State immer mit Spread kopieren: `{ ...state, ... }` — nie direkt mutieren
 - START-Action setzt `IsLoading: true`, Completion-Action setzt `IsLoading: false`
 - `initialState: new [Feature]State()` — immer den Konstruktor nutzen
 
 ### CommonsStateReducer — Pflichtstruktur
 ```typescript
-// Actions: LOADING_COMMONS, LOADING_COMMONS_DONE, ENABLE_ERROR
 const commonsSlice = createSlice({
   name: 'commons',
   initialState: new CommonsState(),
   reducers: {
     LOADING_COMMONS(state, action: PayloadAction<IWebPartComponentProperties>) {
-      return { ...state, SharepointConnection: spfi().using(SPFx(action.payload.Context)), ... };
+      return {
+        ...state,
+        SharepointConnection: spfi().using(SPFx(action.payload.Context)),
+        GraphConnection: graphfi().using(SPFx(action.payload.Context)),
+        Context: action.payload.Context,
+      };
     },
     LOADING_COMMONS_DONE(state) {
       return { ...state, IsInitialLoading: false };
@@ -314,10 +378,12 @@ export class UserService {
 ```
 
 **Regeln:**
-- Methoden: `get`-Prefix (`getCurrentUser`, nicht `loadUser` oder `fetchUser`)
+- Public Methoden: `get`-Prefix (`getCurrentUser`, nicht `loadUser` oder `fetchUser`)
+- Private Methoden: `_` Prefix (`_parseUserResponse`)
 - Parameter immer `commonsState: CommonsState` für Verbindungszugriff
 - Rückgabe: **Plain Data Objects**, nie Redux-Dispatches
-- Error-Handling **nicht** im Service — Fehler nach oben werfen
+- **Kein Error-Handling im Service** — Fehler nach oben werfen, Komponente fängt sie
+- Existierende API-Typen nutzen (`User`, `Group`, `IWebInfo`, `IListInfo` etc.) — nie eigene Typen für API-Responses nachbauen
 
 ### LoggingService — Pflichtbestandteil
 ```typescript
@@ -380,10 +446,11 @@ export default class GamePartWebPart extends BaseClientSideWebPart<Record<string
 
 **Regeln:**
 - Dateiendung: `.tsx` (nicht `.ts`)
-- `useAppDispatch` und `useAppSelector` werden **hier exportiert** und in Komponenten importiert
+- `useAppDispatch` und `useAppSelector` werden **hier exportiert** und in Komponenten importiert (SPFx-Compiler-Limitierung — das ist kein Schönheitsfehler, sondern Pflicht)
 - Props Interface: `Record<string, never>` wenn WebPart selbst keine Properties hat
-- Redux `Provider` wrrapt immer die Root-Komponente
+- Redux `Provider` wrrapt immer die Root-Komponente in `render()`
 - **Kein** Property-Pane Code wenn nicht gebraucht
+- `onInit()` macht nur `super.onInit()` — keine Datenabrufe hier
 
 ---
 
@@ -484,11 +551,12 @@ export const UserProfileComponent: React.FunctionComponent = () => {
 ```
 
 **Regeln:**
-- `React.FunctionComponent` (nicht `React.FC`)
+- `React.FunctionComponent` (nicht `React.FC` — das ist ein Team-Standard)
 - Keine Props wenn nicht gebraucht: `React.FunctionComponent = () => {}`
-- **Kein try/catch** — `.catch()` außerhalb von useEffect
+- Props-Parameter heißt `properties`, nie `props`
+- **Kein try/catch** — `.catch()` außerhalb von useEffect, immer mit `LoggingService`
 - **Immer Spinner** bei `state.IsLoading === true`
-- Komponenten sind **stateless** — alles aus Redux
+- Komponenten sind **stateless** — alle Daten kommen aus Redux
 - `useEffect` mit leerem Array `[]` = einmaliger Load beim Mount
 
 ---
@@ -630,7 +698,7 @@ define([], function() {
 ## 14. SCSS Module
 
 ```scss
-/* [WebpartName].module.scss */
+/* GamePart.module.scss — nach App benannt (nicht nach Komponente) */
 @import '~@fluentui/react/dist/sass/References.scss';
 
 .gamePart {
@@ -650,7 +718,40 @@ import styles from './GamePart.module.scss';
 
 ---
 
-## 15. tsconfig.json
+## 15. Sicherheit (Security)
+
+### XSS-Schutz
+Externe Daten (API-Antworten, Benutzereingaben) **immer** escapen bevor sie ins DOM kommen:
+```typescript
+import { escape } from '@microsoft/sp-lodash-subset';
+<div>{escape(userDisplayName)}</div>
+```
+
+### Principle of Least Privilege
+API-Berechtigungen so minimal wie möglich halten:
+```json
+// config/package-solution.json
+"webApiPermissionRequests": [
+  {
+    "resource": "Microsoft Graph",
+    "scope": "User.Read"
+  }
+]
+```
+
+`User.Read` erlaubt: Name, Email, Basic Info des aktuellen Benutzers lesen.  
+Nur Berechtigungen anfordern, die tatsächlich gebraucht werden.
+
+### SPFx-Authentifizierung
+Das SPFx-Framework übernimmt OAuth-Token automatisch — kein manuelles Token-Management:
+```typescript
+const graph = graphfi().using(GraphSPFx(this.context));
+// this.context enthält den authentifizierten Benutzer — PnP nutzt das intern
+```
+
+---
+
+## 16. tsconfig.json
 
 ```json
 {
@@ -692,7 +793,7 @@ import styles from './GamePart.module.scss';
 
 ---
 
-## 16. gulpfile.js
+## 17. gulpfile.js
 
 ```javascript
 'use strict';
@@ -715,7 +816,7 @@ build.initialize(require('gulp'));
 
 ---
 
-## 17. config/serve.json
+## 18. config/serve.json
 
 ```json
 {
@@ -734,7 +835,7 @@ build.initialize(require('gulp'));
 
 ---
 
-## 18. config/sass.json
+## 19. config/sass.json
 
 ```json
 {
@@ -744,7 +845,7 @@ build.initialize(require('gulp'));
 
 ---
 
-## 19. package.json scripts
+## 20. package.json scripts
 
 ```json
 "scripts": {
@@ -758,10 +859,16 @@ build.initialize(require('gulp'));
 
 ---
 
-## 16. Datenfluss — Der goldene Pfad
+## 21. Datenfluss — Der goldene Pfad
 
 ```
 WebPart.onInit()
+  → super.onInit()  ← nichts weiter hier
+
+WebPart.render()
+  → Redux Provider wrrapt Root-Komponente
+
+RootComponent.useEffect([])
   → dispatch(LOADING_COMMONS(properties))     ← PnP Verbindungen aufbauen
   → commonsState.SharepointConnection gesetzt
   → dispatch(LOADING_COMMONS_DONE())          ← IsInitialLoading = false
@@ -769,22 +876,39 @@ WebPart.onInit()
 
 FeatureComponent.useEffect([])
   → dispatch(START_LOADING_[FEATURE]())       ← IsLoading = true → Spinner
-  → FeatureService.getData(commonsState)      ← API-Call
+  → FeatureService.getData(commonsState)      ← API-Call, kein Error-Handling hier
   → dispatch(LOADING_[FEATURE](data))         ← IsLoading = false → Daten
-  
+
 Fehler:
   .catch((error) => LoggingService.handleError(error, 'KomponentenName:'))
+  → coreLoggingService.handleError(...)
   → dispatch(ENABLE_ERROR())
   → commonsState.HasAppError = true
   → Root-Komponente zeigt MessageBar
 ```
 
+**Warum FeatureComponents erst nach LOADING_COMMONS_DONE rendern?**  
+Die Sub-Komponenten mounten erst wenn `IsInitialLoading === false`. Zu diesem Zeitpunkt sind Sp/Graph garantiert bereit. Kein Guard `if (commonsState.Sp === undefined)` in jeder Feature-Komponente nötig.
+
 ---
 
-## 17. Checklist Neues Projekt
+## 22. Nach Clone — Setup-Schritte
+
+```bash
+npm install
+gulp trust-dev-cert    # Zertifikat erstellen — bei JEDEM frischen Clone nötig
+gulp serve             # Entwicklungsserver starten
+```
+
+Das Zertifikat ist in `.gitignore` — es wird nicht ins Repo eingecheckt und muss nach jedem Clone neu erstellt werden.
+
+---
+
+## 23. Checklist Neues Projekt
 
 - [ ] `npm install @reduxjs/toolkit react-redux redux-thunk @pnp/sp @pnp/graph @microsoft/microsoft-graph-types glb-sp-fx-core`
 - [ ] `src/constants/` anlegen mit Graph- und SP-Query-Konstanten
+- [ ] `src/interfaces/` anlegen für Daten-Interfaces (wenn benötigt)
 - [ ] `src/stateModels/CommonsState.ts` anlegen
 - [ ] `src/stateModels/[Feature]State.ts` für jedes Feature
 - [ ] `src/redux/reducers/CommonsStateReducer.ts` anlegen
@@ -794,7 +918,7 @@ Fehler:
 - [ ] `src/services/LoggingService.ts` mit glb-sp-fx-core
 - [ ] `src/services/[Feature]Service.ts` für jedes Feature
 - [ ] WebPart auf `.tsx` umbenennen, Provider + useAppDispatch/Selector exportieren
-- [ ] `IWebPartComponentProperties.ts` Interface anlegen
+- [ ] `I[WebpartName]ComponentProperties.ts` Interface anlegen
 - [ ] Root-Komponente mit CommonsState-Init-Logik
 - [ ] Feature-Komponenten je in eigenem Unterordner
 - [ ] `loc/de-de.js` anlegen
