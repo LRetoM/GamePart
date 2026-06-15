@@ -8,7 +8,7 @@ Dieses Dokument ist der verbindliche Goldene Standard für alle SPFx-Projekte. A
 
 | Paket | Version |
 |---|---|
-| `@microsoft/sp-*` | 1.23.1 |
+| `@microsoft/sp-*` | **1.21.1** |
 | `react` + `react-dom` | 17.0.1 |
 | `@fluentui/react` | ^8.106.4 |
 | `@reduxjs/toolkit` | ^2.12.0 |
@@ -19,6 +19,25 @@ Dieses Dokument ist der verbindliche Goldene Standard für alle SPFx-Projekte. A
 | `@microsoft/microsoft-graph-types` | latest |
 | `glb-sp-fx-core` | ^1.8.0 |
 | `tslib` | 2.3.1 |
+
+### devDependencies (Build-Tools)
+
+| Paket | Version |
+|---|---|
+| `@microsoft/sp-build-web` | 1.21.1 |
+| `@microsoft/sp-module-interfaces` | 1.21.1 |
+| `@microsoft/rush-stack-compiler-5.3` | 0.1.0 |
+| `@microsoft/eslint-config-spfx` | 1.21.1 |
+| `@microsoft/eslint-plugin-spfx` | 1.21.1 |
+| `@rushstack/eslint-config` | 4.0.1 |
+| `@types/react` | 17.0.45 |
+| `@types/react-dom` | 17.0.17 |
+| `@types/webpack-env` | ~1.15.2 |
+| `eslint` | 8.57.1 |
+| `eslint-plugin-react-hooks` | 4.3.0 |
+| `gulp` | 4.0.2 |
+| `typescript` | ~5.3.3 |
+| `ajv` | ^8.20.0 |
 
 ---
 
@@ -638,18 +657,104 @@ import styles from './GamePart.module.scss';
   "extends": "./node_modules/@microsoft/rush-stack-compiler-5.3/includes/tsconfig-web.json",
   "compilerOptions": {
     "target": "es5",
+    "forceConsistentCasingInFileNames": true,
     "module": "esnext",
+    "moduleResolution": "node",
     "jsx": "react",
     "declaration": true,
     "sourceMap": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "outDir": "lib",
+    "inlineSources": false,
     "noImplicitAny": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@microsoft"
+    ],
+    "types": [
+      "webpack-env"
+    ],
+    "lib": [
+      "es5",
+      "dom",
+      "es2015.collection",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}
+```
+
+---
+
+## 16. gulpfile.js
+
+```javascript
+'use strict';
+
+const build = require('@microsoft/sp-build-web');
+
+build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
+
+var getTasks = build.rig.getTasks;
+build.rig.getTasks = function () {
+  var result = getTasks.call(build.rig);
+  result.set('serve', result.get('serve-deprecated'));
+  return result;
+};
+
+build.initialize(require('gulp'));
+```
+
+**Wichtig:** Der `serve-deprecated`-Block ist zwingend — ohne ihn existiert `gulp serve` nicht.
+
+---
+
+## 17. config/serve.json
+
+```json
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "initialPage": "https://{tenant}.sharepoint.com/sites/{site}/_layouts/15/workbench.aspx",
+  "api": {
+    "port": 5432,
+    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
   }
 }
 ```
+
+**Wichtig:** Schema muss `core-build/serve.schema.json` sein (nicht `spfx-build/spfx-serve.schema.json`) — nur dann öffnet `gulp serve` die URL ohne den `?debugManifestsFile=`-Parameter.
+
+---
+
+## 18. config/sass.json
+
+```json
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/sass.schema.json"
+}
+```
+
+---
+
+## 19. package.json scripts
+
+```json
+"scripts": {
+  "build": "gulp bundle",
+  "clean": "gulp clean",
+  "test": "gulp test"
+}
+```
+
+**Kein `serve`-Script** — `gulp serve` direkt im Terminal ausführen.
 
 ---
 
