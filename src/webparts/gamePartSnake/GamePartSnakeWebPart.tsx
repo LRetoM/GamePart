@@ -10,6 +10,10 @@ import { IGamePartSnakeComponentProperties } from './components/IGamePartSnakeCo
 
 export default class GamePartSnakeWebPart extends BaseClientSideWebPart<Record<string, never>> {
 
+    protected async onInit(): Promise<void> {
+        return super.onInit();
+    }
+
     public render(): void {
         const element: React.ReactElement<IGamePartSnakeComponentProperties> = React.createElement(
             GamePartSnakeComponent,
