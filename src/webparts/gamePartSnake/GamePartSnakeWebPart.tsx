@@ -2,19 +2,19 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 
-import GamePartSnakeComponent from './components/GamePartSnake';
+import {GamePartSnakeComponent} from './components/GamePartSnake';
 
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IGamePartSnakeProps } from './components/IGamePartSnakeProps';
+import { IGamePartSnakeComponentProperties } from './components/IGamePartSnakeComponentProperties';
 
 export default class GamePartSnakeWebPart extends BaseClientSideWebPart<Record<string, never>> {
 
     public render(): void {
-        const element: React.ReactElement<IGamePartSnakeProps> = React.createElement(
+        const element: React.ReactElement<IGamePartSnakeComponentProperties> = React.createElement(
             GamePartSnakeComponent,
             {
-                UserDisplayName: this.context.pageContext.user.displayName
+               Context: this.context
             }
         );
 

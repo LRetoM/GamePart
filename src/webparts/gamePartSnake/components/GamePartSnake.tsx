@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styles from './GamePartSnake.module.scss';
-import { IGamePartSnakeProps } from './IGamePartSnakeProps';
+import { IGamePartSnakeComponentProperties } from './IGamePartSnakeComponentProperties';
 
-const GamePartSnakeComponent = (props: IGamePartSnakeProps): React.ReactElement => {
+export const GamePartSnakeComponent = React.FunctionComponent <IGamePartSnakeComponentProperties> = () => {
     return (
         <div className={styles.gamePartSnake}>
             <h2>GamePartSnake</h2>
@@ -11,4 +11,3 @@ const GamePartSnakeComponent = (props: IGamePartSnakeProps): React.ReactElement 
     );
 };
 
-export default GamePartSnakeComponent;
