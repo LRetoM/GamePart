@@ -1,5 +1,5 @@
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 
-export interface IGamePartSnakeComponentProperties {
+export interface IGameSnakeComponentProperties {
     Context: WebPartContext;
 }

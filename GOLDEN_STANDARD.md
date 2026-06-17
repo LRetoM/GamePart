@@ -127,13 +127,13 @@ UserState.ts                  ← PascalCase
 UserStateReducer.ts           ← PascalCase + Suffix
 UserService.ts                ← PascalCase + Suffix
 IUserComponentProperties.ts   ← I-Prefix + PascalCase
-GamePart.module.scss          ← PascalCase (nach App benannt)
+GameSnake.module.scss          ← PascalCase (nach App benannt)
 IGroupItem.ts                 ← I-Prefix für Daten-Interfaces
 ```
 
 ### Interfaces
 ```typescript
-export interface IGamePartComponentProperties { ... }
+export interface IGameSnakeComponentProperties { ... }
 //               ↑ immer I-Prefix + PascalCase
 ```
 
@@ -185,7 +185,7 @@ const list = ...           // ✓ (nicht l => ...)
 ### Parameter-Benennung in Komponenten
 ```typescript
 // Props-Parameter heißt immer "properties", nie "props"
-export const GamePartComponent: React.FunctionComponent<IGamePartComponentProperties> = (properties) => {
+export const GameSnakeComponent: React.FunctionComponent<IGameSnakeComponentProperties> = (properties) => {
   dispatch(LOADING_COMMONS(properties));
 };
 
@@ -407,7 +407,7 @@ export class LoggingService {
 ## 8. WebPart (`[Name]WebPart.tsx`)
 
 ```typescript
-// src/webparts/gamePart/GamePartWebPart.tsx
+// src/webparts/gameSnake/GameSnakeWebPart.tsx
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
@@ -415,20 +415,20 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { Provider } from 'react-redux';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import store, { AppDispatch, RootState } from '../../redux/Store';
-import { GamePartComponent } from './components/GamePartComponent';
-import { IGamePartComponentProperties } from './IGamePartComponentProperties';
+import { GameSnakeComponent } from './components/GameSnakeComponent';
+import { IGameSnakeComponentProperties } from './IGameSnakeComponentProperties';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export default class GamePartWebPart extends BaseClientSideWebPart<Record<string, never>> {
+export default class GameSnakeWebPart extends BaseClientSideWebPart<Record<string, never>> {
   protected async onInit(): Promise<void> {
     return super.onInit();
   }
 
   public render(): void {
-    const element: React.ReactElement<IGamePartComponentProperties> = React.createElement(
-      GamePartComponent,
+    const element: React.ReactElement<IGameSnakeComponentProperties> = React.createElement(
+      GameSnakeComponent,
       { Context: this.context }
     );
     ReactDom.render(<Provider store={store}>{element}</Provider>, this.domElement);
@@ -458,29 +458,29 @@ export default class GamePartWebPart extends BaseClientSideWebPart<Record<string
 
 ### Props Interface
 ```typescript
-// src/webparts/gamePart/IGamePartComponentProperties.ts
+// src/webparts/gameSnake/IGameSnakeComponentProperties.ts
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 
-export interface IGamePartComponentProperties {
+export interface IGameSnakeComponentProperties {
   Context: WebPartContext;
 }
 ```
 
 ### Root-Komponente (Single Responsibility: Init + Routing)
 ```typescript
-// src/webparts/gamePart/components/GamePartComponent.tsx
+// src/webparts/gameSnake/components/GameSnakeComponent.tsx
 import * as React from 'react';
 import { MessageBar, MessageBarType, Spinner, SpinnerSize } from '@fluentui/react';
-import { useAppDispatch, useAppSelector } from '../GamePartWebPart';
+import { useAppDispatch, useAppSelector } from '../GameSnakeWebPart';
 import { CommonsState } from '../../../stateModels/CommonsState';
 import { LOADING_COMMONS, LOADING_COMMONS_DONE } from '../../../redux/reducers/CommonsStateReducer';
-import { IGamePartComponentProperties } from '../IGamePartComponentProperties';
+import { IGameSnakeComponentProperties } from '../IGameSnakeComponentProperties';
 import { SpFxCoreCommonService } from 'glb-sp-fx-core/lib/services/spFxCore/spfxCoreCommonService/SpFxCoreCommonService';
-import styles from './GamePart.module.scss';
+import styles from './GameSnake.module.scss';
 
 const commonService = new SpFxCoreCommonService();
 
-export const GamePartComponent: React.FunctionComponent<IGamePartComponentProperties> = (properties) => {
+export const GameSnakeComponent: React.FunctionComponent<IGameSnakeComponentProperties> = (properties) => {
   const dispatch = useAppDispatch();
   const commonsState: CommonsState = useAppSelector(state => state.commonsState);
 
@@ -503,7 +503,7 @@ export const GamePartComponent: React.FunctionComponent<IGamePartComponentProper
   }
 
   return (
-    <section className={styles.gamePart}>
+    <section className={styles.gameSnake}>
       {/* Feature-Komponenten hier einbinden */}
     </section>
   );
@@ -512,10 +512,10 @@ export const GamePartComponent: React.FunctionComponent<IGamePartComponentProper
 
 ### Feature-Komponenten (Single Responsibility: 1 Feature)
 ```typescript
-// src/webparts/gamePart/components/userProfileComponent/UserProfileComponent.tsx
+// src/webparts/gameSnake/components/userProfileComponent/UserProfileComponent.tsx
 import * as React from 'react';
 import { Spinner, SpinnerSize } from '@fluentui/react';
-import { useAppDispatch, useAppSelector } from '../../GamePartWebPart';
+import { useAppDispatch, useAppSelector } from '../../GameSnakeWebPart';
 import { CommonsState } from '../../../../stateModels/CommonsState';
 import { UserState } from '../../../../stateModels/UserState';
 import { UserService } from '../../../../services/UserService';
@@ -579,7 +579,7 @@ coreLoggingService.handleError(error, 'KomponentenName:')
 ```json
 {
   "localizedResources": {
-    "GamePartWebPartStrings": "lib/webparts/gamePart/loc/{locale}.js",
+    "GameSnakeWebPartStrings": "lib/webparts/gameSnake/loc/{locale}.js",
     "GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js"
   }
 }
@@ -610,7 +610,7 @@ export const { START_LOADING_USER, LOADING_USER } = userSlice.actions;  // named
 
 ### Relative Imports in Komponenten
 ```typescript
-import { useAppDispatch, useAppSelector } from '../../GamePartWebPart';    // WebPart Hooks
+import { useAppDispatch, useAppSelector } from '../../GameSnakeWebPart';    // WebPart Hooks
 import { CommonsState } from '../../../../stateModels/CommonsState';       // State Models
 import { UserService } from '../../../../services/UserService';            // Services
 import { LOADING_USER } from '../../../../redux/reducers/UserStateReducer'; // Actions
@@ -657,14 +657,14 @@ export const buildSpListFilter = (hidden: boolean, baseTemplate?: number): strin
 
 ```typescript
 // loc/mystrings.d.ts
-declare interface IGamePartWebPartStrings {
+declare interface IGameSnakeWebPartStrings {
   AppLocalEnvironmentSharePoint: string;
   General: {
     LoadingError: string;
   };
 }
-declare module 'GamePartWebPartStrings' {
-  const strings: IGamePartWebPartStrings;
+declare module 'GameSnakeWebPartStrings' {
+  const strings: IGameSnakeWebPartStrings;
   export = strings;
 }
 ```
@@ -698,10 +698,10 @@ define([], function() {
 ## 14. SCSS Module
 
 ```scss
-/* GamePart.module.scss — nach App benannt (nicht nach Komponente) */
+/* GameSnake.module.scss — nach App benannt (nicht nach Komponente) */
 @import '~@fluentui/react/dist/sass/References.scss';
 
-.gamePart {
+.gameSnake {
   font-family: $ms-font-family-fallbacks;
   color: "[theme:bodyText, default: #323130]";
   
@@ -711,9 +711,9 @@ define([], function() {
 ```
 
 ```typescript
-import styles from './GamePart.module.scss';
+import styles from './GameSnake.module.scss';
 // Verwendung:
-<div className={styles.gamePart}>
+<div className={styles.gameSnake}>
 ```
 
 ---

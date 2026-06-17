@@ -2,21 +2,21 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 
-import {GamePartSnakeComponent} from './components/GamePartSnake';
+import {GameSnakeComponent} from './components/GameSnake';
 
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { IGamePartSnakeComponentProperties } from './components/IGamePartSnakeComponentProperties';
+import { IGameSnakeComponentProperties } from './components/IGameSnakeComponentProperties';
 
-export default class GamePartSnakeWebPart extends BaseClientSideWebPart<Record<string, never>> {
+export default class GameSnakeWebPart extends BaseClientSideWebPart<Record<string, never>> {
 
     protected async onInit(): Promise<void> {
         return super.onInit();
     }
 
     public render(): void {
-        const element: React.ReactElement<IGamePartSnakeComponentProperties> = React.createElement(
-            GamePartSnakeComponent,
+        const element: React.ReactElement<IGameSnakeComponentProperties> = React.createElement(
+            GameSnakeComponent,
             {
                Context: this.context
             }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "game-part-snake-web-part": {
+    "game-snake-web-part": {
       "components": [
         {
-          "entrypoint": "./lib/webparts/gamePartSnake/GamePartSnakeWebPart.js",
-          "manifest": "./src/webparts/gamePartSnake/GamePartSnakeWebPart.manifest.json"
+          "entrypoint": "./lib/webparts/gameSnake/GameSnakeWebPart.js",
+          "manifest": "./src/webparts/gameSnake/GameSnakeWebPart.manifest.json"
         }
       ]
     }
@@ -14,7 +14,7 @@
   "externals": {},
   "localizedResources": {
     "GLBSpFxCoreLibraryStrings": "node_modules/glb-sp-fx-core/lib/loc/{locale}.js",
-    "GamePartSnakeWebPartStrings": "lib/webparts/gamePartSnake/loc/{locale}.js",
+    "GameSnakeWebPartStrings": "lib/webparts/gameSnake/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
   }
 }
