@@ -326,30 +326,31 @@ import { combineReducers } from '@reduxjs/toolkit';
 import commonsSlice from './CommonsStateReducer';
 import userSlice from './UserStateReducer';
 
-const RootReducer = combineReducers({
+export default combineReducers({
   commonsState: commonsSlice.reducer,
   userState: userSlice.reducer,
 });
-
-export default RootReducer;
 ```
 
 ### Store
 ```typescript
 // src/redux/Store.ts
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, Tuple } from '@reduxjs/toolkit';
 import { thunk } from 'redux-thunk';
-import RootReducer from './reducers/RootReducer';
+import rootReducer from './reducers/RootReducer';
 
 const store = configureStore({
-  reducer: RootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
+  reducer: rootReducer,
+  middleware: () => new Tuple(thunk)
 });
 
 export default store;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 ```
+
+**Warum `Tuple` statt `getDefaultMiddleware`?**  
+Redux Toolkit's `getDefaultMiddleware()` enthält einen Serialisierungs-Check der bei SPFx fehlschlägt — weil `WebPartContext` nicht serialisierbar ist. `new Tuple(thunk)` setzt nur Thunk ohne diesen Check.
 
 ---
 
@@ -382,12 +383,13 @@ export class UserService {
 - Private Methoden: `_` Prefix (`_parseUserResponse`)
 - Parameter immer `commonsState: CommonsState` für Verbindungszugriff
 - Rückgabe: **Plain Data Objects**, nie Redux-Dispatches
-- **Kein Error-Handling im Service** — Fehler nach oben werfen, Komponente fängt sie
+- **try/catch im Service** — Fehler werden im Service mit `LoggingService.handleError` behandelt, nicht in der Komponente
 - Existierende API-Typen nutzen (`User`, `Group`, `IWebInfo`, `IListInfo` etc.) — nie eigene Typen für API-Responses nachbauen
 
 ### LoggingService — Pflichtbestandteil
 ```typescript
 // src/services/LoggingService.ts
+import { HttpRequestError } from '@pnp/queryable';
 import { SpFxCoreLoggingService } from 'glb-sp-fx-core/lib/services/spFxCore/spfxCoreLoggingService/SpFxCoreLoggingService';
 import store from '../redux/Store';
 import { ENABLE_ERROR } from '../redux/reducers/CommonsStateReducer';
@@ -395,12 +397,14 @@ import { ENABLE_ERROR } from '../redux/reducers/CommonsStateReducer';
 const coreLoggingService = new SpFxCoreLoggingService();
 
 export class LoggingService {
-  public static handleError(error: Error, context: string): void {
-    coreLoggingService.handleError(error, context);
+  public static async handleError(error: Error | HttpRequestError, message: string): Promise<void> {
     store.dispatch(ENABLE_ERROR());
+    await coreLoggingService.handleError(error, message);
   }
 }
 ```
+
+**Reihenfolge:** ENABLE_ERROR zuerst dispatchen, dann loggen — damit der Fehlerscreen sofort sichtbar ist, auch wenn das Logging async Zeit braucht.
 
 ---
 
@@ -533,9 +537,7 @@ export const UserProfileComponent: React.FunctionComponent = () => {
   };
 
   React.useEffect(() => {
-    getCurrentUser().catch(async (error: Error) =>
-      LoggingService.handleError(error, 'UserProfileComponent:')
-    );
+    getCurrentUser();
   }, []);
 
   if (userState.IsLoading) {
@@ -554,7 +556,7 @@ export const UserProfileComponent: React.FunctionComponent = () => {
 - `React.FunctionComponent` (nicht `React.FC` — das ist ein Team-Standard)
 - Keine Props wenn nicht gebraucht: `React.FunctionComponent = () => {}`
 - Props-Parameter heißt `properties`, nie `props`
-- **Kein try/catch** — `.catch()` außerhalb von useEffect, immer mit `LoggingService`
+- **Kein try/catch in Komponenten** — Error-Handling gehört in den Service (mit `LoggingService`), nicht in die Komponente
 - **Immer Spinner** bei `state.IsLoading === true`
 - Komponenten sind **stateless** — alle Daten kommen aus Redux
 - `useEffect` mit leerem Array `[]` = einmaliger Load beim Mount
