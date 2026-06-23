@@ -1,8 +1,6 @@
-import { WebPartContext } from '@microsoft/sp-webpart-base';
-
 export class CommonsState{
 
-    public Context: WebPartContext;
+    public Context: any;
     public IsInitialLoading: boolean;
     public HasAppError: boolean;
 
