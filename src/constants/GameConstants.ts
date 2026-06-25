@@ -1,5 +1,5 @@
 export type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
-export type GameStatus = "IDLE" | "RUNNING" | "GAME_OVER";
+export type GameStatus = "IDLE" | "READY" | "RUNNING" | "GAME_OVER";
 export type BoardSizeOptions = "SMALL" | "MEDIUM" | "LARGE";
 export type SpeedOptions = "SLOW" | "NORMAL" | "FAST";
 export type FruitCountOptions = 1 | 3 | 5 | 10;

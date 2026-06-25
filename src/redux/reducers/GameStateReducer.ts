@@ -20,9 +20,15 @@ const gameSlice = createSlice({
         START_GAME(state: GameState, action: PayloadAction<{SnakePosition: IPosition[], FruitPosition: IPosition[]}>){
             return{
                     ...state,
-                    GameStatus: "RUNNING" as const,
+                    GameStatus: "READY" as const,
                     SnakePosition: action.payload.SnakePosition,
                     FruitPosition: action.payload.FruitPosition    
+            }
+        },
+        BEGIN_GAME(state: GameState){
+            return{
+                    ...state,
+                    GameStatus: "RUNNING" as const, 
             }
         },
         MOVE_SNAKE(state: GameState, action: PayloadAction<{SnakePosition: IPosition[]}>){
@@ -55,4 +61,4 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice;
-export const {LOADING_GAME_DONE, SET_GAME_SETTINGS, START_GAME, MOVE_SNAKE, CHANGE_DIRECTION, EAT_FRUIT, SET_GAME_OVER, RESET_GAME} = gameSlice.actions;
+export const {LOADING_GAME_DONE, SET_GAME_SETTINGS, START_GAME, BEGIN_GAME, MOVE_SNAKE, CHANGE_DIRECTION, EAT_FRUIT, SET_GAME_OVER, RESET_GAME} = gameSlice.actions;
