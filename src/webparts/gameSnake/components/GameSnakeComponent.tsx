@@ -47,7 +47,7 @@ export const GameSnakeComponent: React.FunctionComponent <IGameSnakeComponentPro
         <section className={styles.gameSnake}>
             <div>
                 {gameState.GameStatus === "IDLE" && <MenuComponent />}
-                {gameState.GameStatus === "READY" || gameState.GameStatus === "RUNNING" && <GameComponent />}
+                {(gameState.GameStatus === "READY" || gameState.GameStatus === "RUNNING") && <GameComponent />}
                 {gameState.GameStatus === "GAME_OVER" && <GameOverComponent />}
             </div>
         </section>
