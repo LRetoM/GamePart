@@ -561,6 +561,22 @@ export const UserProfileComponent: React.FunctionComponent = () => {
 - Komponenten sind **stateless** — alle Daten kommen aus Redux
 - `useEffect` mit leerem Array `[]` = einmaliger Load beim Mount
 
+### Pitfall: Operator-Priorität bei JSX Conditional Rendering
+
+`&&` hat höhere Priorität als `||` — genau wie `*` vor `+` in Mathe. Ohne Klammern entsteht ein stiller Bug:
+
+```typescript
+// ✗ FALSCH — && bindet stärker, "READY" gibt true zurück, nichts wird gerendert
+{gameState.GameStatus === "READY" || gameState.GameStatus === "RUNNING" && <GameComponent />}
+// → wertet aus als: ("READY") || (("RUNNING") && <GameComponent />)
+// → bei "READY": gibt true zurück → React rendert nichts
+
+// ✓ RICHTIG — Klammern erzwingen die richtige Reihenfolge
+{(gameState.GameStatus === "READY" || gameState.GameStatus === "RUNNING") && <GameComponent />}
+```
+
+**Regel:** Immer Klammern setzen wenn `||` und `&&` in einem JSX-Ausdruck kombiniert werden.
+
 ---
 
 ## 10. glb-sp-fx-core — Pflichtintegration

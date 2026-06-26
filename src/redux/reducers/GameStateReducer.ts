@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GameState } from "../../stateModels/GameState";
-import { Direction, FruitCountOptions, SpeedOptions } from "../../constants/GameConstants";
+import { BoardSizeOptions, BoardSizes, Direction, FruitCountOptions, SpeedOptions } from "../../constants/GameConstants";
 import { IPosition } from "../../interfaces/IPosition";
 
 const gameSlice = createSlice({
@@ -10,11 +10,22 @@ const gameSlice = createSlice({
         LOADING_GAME_DONE(state: GameState){
             return {...state, IsLoading: false}
         },
-        SET_GAME_SETTINGS(state: GameState, action: PayloadAction<{Speed: SpeedOptions, FruitCount: FruitCountOptions}>){
+        CHANGE_SPEED(state: GameState, action: PayloadAction<{Speed:SpeedOptions}>){
+            return{
+                    ...state,
+                    Speed: action.payload.Speed
+            }
+        },
+        CHANGE_FRUIT_COUNT(state: GameState, action: PayloadAction<{FruitCount: FruitCountOptions}>){
             return {
-                    ...state, 
-                    Speed: action.payload.Speed,
+                    ...state,
                     FruitCount: action.payload.FruitCount
+            }
+        },
+        CHANGE_BOARD_SIZE(state: GameState, action: PayloadAction<{BoardSize: BoardSizeOptions}>){
+            return {
+                    ...state,
+                    BoardSize: action.payload.BoardSize
             }
         },
         START_GAME(state: GameState, action: PayloadAction<{SnakePosition: IPosition[], FruitPosition: IPosition[]}>){
@@ -61,4 +72,4 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice;
-export const {LOADING_GAME_DONE, SET_GAME_SETTINGS, START_GAME, BEGIN_GAME, MOVE_SNAKE, CHANGE_DIRECTION, EAT_FRUIT, SET_GAME_OVER, RESET_GAME} = gameSlice.actions;
+export const {LOADING_GAME_DONE, CHANGE_SPEED, CHANGE_FRUIT_COUNT, CHANGE_BOARD_SIZE, START_GAME, BEGIN_GAME, MOVE_SNAKE, CHANGE_DIRECTION, EAT_FRUIT, SET_GAME_OVER, RESET_GAME} = gameSlice.actions;

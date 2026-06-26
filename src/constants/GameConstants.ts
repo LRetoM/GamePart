@@ -4,6 +4,8 @@ export type BoardSizeOptions = "SMALL" | "MEDIUM" | "LARGE";
 export type SpeedOptions = "SLOW" | "NORMAL" | "FAST";
 export type FruitCountOptions = 1 | 3 | 5 | 10;
 
+export const FruitCounts: FruitCountOptions[] = [1,3,5,10]
+
 export const BoardSizes: Record<BoardSizeOptions, {width:number; height:number}> = {
     SMALL: {width: 10, height: 10},
     MEDIUM: {width: 20, height: 20},
