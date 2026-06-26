@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GameState } from "../../stateModels/GameState";
-import { BoardSizeOptions, BoardSizes, Direction, FruitCountOptions, SpeedOptions } from "../../constants/GameConstants";
+import { BoardSizeOptions, Direction, FruitCountOptions, SpeedOptions } from "../../constants/GameConstants";
 import { IPosition } from "../../interfaces/IPosition";
 
 const gameSlice = createSlice({

@@ -2,3 +2,31 @@
     overflow: hidden;
     padding: 1em;
 }
+
+.row {
+    display: flex;
+}
+
+.snake-head{
+    width: 20px;
+    height: 20px;
+    background-color: rgb(3, 3, 158);
+}
+
+.snake-body{
+    width: 20px;
+    height: 20px;
+    background-color: darkblue;
+}
+
+.fruit{
+    width: 20px;
+    height: 20px;
+    background-color: rgb(207, 57, 46);
+}
+
+.empty{
+    width: 20px;
+    height: 20px;
+    background-color: rgb(4, 148, 4);
+}

@@ -11,7 +11,6 @@ export const MenuComponent: React.FunctionComponent = () =>{
 
     const onSpeedChange = (speed: SpeedOptions): void =>{
         dispatch(CHANGE_SPEED({Speed: speed}));
-        
     }
 
     const onFruitCountChange = (fruitCount: FruitCountOptions): void => {
