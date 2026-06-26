@@ -1,12 +1,11 @@
 import * as React from 'react';
 import styles from '../GameSnake.module.scss';
 import { GameState } from "../../../../stateModels/GameState";
-import { useAppDispatch, useAppSelector } from "../../GameSnakeWebPart";
+import { useAppSelector } from "../../GameSnakeWebPart";
 import { BoardSizes } from '../../../../constants/GameConstants';
 
 
 export const GameComponent: React.FunctionComponent = () =>{
-    const dispatch = useAppDispatch();
     const gameState: GameState = useAppSelector(state => state.gameState);
     const snakePositions = gameState.SnakePosition.map(pos => `${pos.x},${pos.y}`);
     const fruitPositions = gameState.FruitPosition.map(pos => `${pos.x},${pos.y}`);
@@ -15,8 +14,8 @@ export const GameComponent: React.FunctionComponent = () =>{
         const cellKey = `${columnIndex},${rowIndex}`;
         const headKey = `${gameState.SnakePosition[0].x},${gameState.SnakePosition[0].y}`;
 
-        if (cellKey === headKey) return "snake-head";
-        if (snakePositions.includes(cellKey)) return "snake-body";
+        if (cellKey === headKey) return "snakeHead";
+        if (snakePositions.includes(cellKey)) return "snakeBody";
         if (fruitPositions.includes(cellKey)) return "fruit";
 
         return "empty"
@@ -25,10 +24,10 @@ export const GameComponent: React.FunctionComponent = () =>{
     
     return (
         <div>
-            {Array.from({length: BoardSizes[gameState.BoardSize].height}).map((_, rowIndex) => (
+            {Array.from({length: BoardSizes[gameState.BoardSize].height}).map((_: unknown, rowIndex: number) => (
                 <div key= {rowIndex} className={styles.row}>
-                    {Array.from({length: BoardSizes[gameState.BoardSize].width}).map((_, columnIndex) => (
-                       <div key= {`${rowIndex}-${columnIndex}`} className={styles[getCellType(columnIndex, rowIndex)]}/>   
+                    {Array.from({length: BoardSizes[gameState.BoardSize].width}).map((_: unknown, columnIndex: number) => (
+                       <div key= {`${rowIndex}-${columnIndex}`} className={(styles as Record <string, string>)[getCellType(columnIndex, rowIndex)]}/>   
                     ))}
                 </div>
             ))}

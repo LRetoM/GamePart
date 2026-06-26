@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { CHANGE_SPEED, CHANGE_FRUIT_COUNT, CHANGE_BOARD_SIZE, START_GAME } from "../../../../redux/reducers/GameStateReducer";
-import { GameState } from "../../../../stateModels/GameState";
-import { useAppDispatch, useAppSelector } from "../../GameSnakeWebPart";
+import { useAppDispatch } from "../../GameSnakeWebPart";
 import { BoardSizeOptions, BoardSizes, FruitCountOptions, FruitCounts, Speed, SpeedOptions } from '../../../../constants/GameConstants';
-
 
 export const MenuComponent: React.FunctionComponent = () =>{
     const dispatch = useAppDispatch();
-    const gameState: GameState = useAppSelector(state => state.gameState);
 
     const onSpeedChange = (speed: SpeedOptions): void =>{
         dispatch(CHANGE_SPEED({Speed: speed}));
