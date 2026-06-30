@@ -62,7 +62,7 @@ export const GameComponent: React.FunctionComponent = () =>{
      return () => {
         clearInterval(intervalId);
      };   
-    }, [gameState.GameStatus]);
+    }, [gameState.GameStatus, gameState.Direction, gameState.SnakePosition]);
     
     return (
         <div>
